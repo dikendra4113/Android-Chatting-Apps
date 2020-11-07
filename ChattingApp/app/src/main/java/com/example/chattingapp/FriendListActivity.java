@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,6 +48,7 @@ public class FriendListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ImageView sendBtn;
     private EditText messageBox;
+    private  String msg;
     private MessageAdapter adapter;
     private UUID uuid;
     private String saveCurrentDate, saveCurrentTime,timestamp;
@@ -128,11 +130,14 @@ public class FriendListActivity extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uuid = UUID.randomUUID();
-                MessageModel model = new MessageModel();
-                model.setViewCode(1);
-                Log.i("tpe",""+model.getViewCode());
-                sendMsg();
+                msg = messageBox.getText().toString();
+                if(TextUtils.isEmpty(msg)){
+                    Toast.makeText(FriendListActivity.this, "please enter Your message first", Toast.LENGTH_SHORT).show();
+                }else {
+                    uuid = UUID.randomUUID();
+                    sendMsg();
+                }
+
 
             }
         });
@@ -140,7 +145,7 @@ public class FriendListActivity extends AppCompatActivity {
     }
 
     private void sendMsg() {
-        String msg = messageBox.getText().toString();
+
         HashMap<String,Object> data = new HashMap<>();
         data.put("message",msg);
         data.put("sender",email);
